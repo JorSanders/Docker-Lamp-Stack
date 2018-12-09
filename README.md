@@ -1,8 +1,8 @@
-# Run php applications with a Nginx host and a MySQL database
+# Run php applications with a Nginx webserver and a MySQL database
 
 Docker running Nginx, PHP-FPM, MySQL. 
 
-INTENDED FOR DEVELOPMENT, insecurities exist for production environments.
+INTENDED FOR DEVELOPMENT.
 
 Any feedback or questions are welcome.
 
