@@ -20,6 +20,12 @@ RUN chown -R www-data /var/www/
 RUN docker-php-source delete
 RUN rm -rf /var/cache/apk/*
 
+# Xdebug
+RUN apk add --no-cache	g++ make
+RUN apk add --no-cache	autoconf
+RUN pecl install xdebug
+RUN docker-php-ext-enable xdebug
+
 # Change the user that executes commands
 USER www-data
 
