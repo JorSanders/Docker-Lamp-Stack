@@ -16,16 +16,25 @@ RUN set -x \
 	&& adduser -u 1000 -D -S -G www-data www-data
 RUN chown -R www-data /var/www/
 
-# Clean up
-RUN docker-php-source delete
-RUN rm -rf /var/cache/apk/*
-
 # Xdebug
 RUN apk add --no-cache	g++ make
 RUN apk add --no-cache	autoconf
 RUN pecl install xdebug
 RUN docker-php-ext-enable xdebug
 
+# PWT requirements
+RUN apk add --no-cache	freetype
+RUN apk add --no-cache	freetype-dev
+RUN apk add --no-cache	libpng
+RUN apk add --no-cache	libpng-dev
+RUN apk add --no-cache	libjpeg-turbo
+RUN apk add --no-cache	libjpeg-turbo-dev
+RUN docker-php-ext-install mysqli
+RUN docker-php-ext-install gd
+
+# Clean up
+RUN docker-php-source delete
+RUN rm -rf /var/cache/apk/*
+
 # Change the user that executes commands
 USER www-data
-
