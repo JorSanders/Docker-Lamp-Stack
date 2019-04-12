@@ -3,7 +3,7 @@ version: '3.6'
 services:
   apache:
     container_name: ${PROJECTNAME}-apache
-    image: httpd:alpine
+    image: httpd:${APACHEVERSION}-alpine
     links:
       - phpfpm
     volumes:
