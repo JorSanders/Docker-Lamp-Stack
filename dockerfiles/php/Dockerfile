@@ -15,7 +15,8 @@ RUN set -x \
 	&& addgroup -g 1000 -S www-data \
 	&& adduser -u 1000 -D -S -G www-data www-data
 RUN chown -R www-data /var/www/
-
+    links:
+      - "phpfpm"
 # Xdebug
 RUN apk add --no-cache	g++ make
 RUN apk add --no-cache	autoconf
