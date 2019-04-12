@@ -38,16 +38,6 @@ services:
     networks:
       static-network:
         ipv4_address: "${IPV4ADDRESS}.6"
-  hosts:
-    build:
-      context: ./dockerfiles/hosts
-      dockerfile: Dockerfile
-      args:
-        IPV4ADDRESS: ${IPV4ADDRESS}
-        PROJECTNAME: ${PROJECTNAME}
-        TLD: ${TLD}
-    volumes:
-      - /etc/hosts:/etc/hosts
     mysql:
       container_name: "${PROJECTNAME}-mysql-${MYSQLVERSION}"
       image: "mysql:${MYSQLVERSION}"
@@ -61,6 +51,16 @@ services:
       networks:
         static-network:
           ipv4_address: "${IPV4ADDRESS}.7"
+  hosts:
+    build:
+      context: ./dockerfiles/hosts
+      dockerfile: Dockerfile
+      args:
+        IPV4ADDRESS: ${IPV4ADDRESS}
+        PROJECTNAME: ${PROJECTNAME}
+        TLD: ${TLD}
+    volumes:
+      - /etc/hosts:/etc/hosts
 networks:
   static-network:
     ipam:
