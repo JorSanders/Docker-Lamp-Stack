@@ -1,1 +1,0 @@
-This folder must be include in git repo

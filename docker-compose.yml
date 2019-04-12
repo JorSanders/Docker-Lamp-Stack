@@ -4,8 +4,6 @@ services:
   apache:
     container_name: "${PROJECTNAME}-apache-${APACHEVERSION}"
     image: "httpd:${APACHEVERSION}-alpine"
-    links:
-      - "phpfpm"
     volumes:
       - ./${PROJECTNAME}/${WWWROOT}:/usr/local/apache2/htdocs/
       - ./conf/httpd.conf:/usr/local/apache2/conf/httpd.conf
@@ -32,6 +30,7 @@ services:
       dockerfile: Dockerfile
       args:
         PHPVERSION: ${PHPVERSION}
+    user: "1000"
     volumes:
       - ./${PROJECTNAME}/${WWWROOT}:/var/www/html/
       - ./conf/php.ini:/usr/local/etc/php/conf.d/50-setting.ini
@@ -39,27 +38,27 @@ services:
     networks:
       static-network:
         ipv4_address: "${IPV4ADDRESS}.6"
-    mysql:
-      container_name: "${PROJECTNAME}-mysql-${MYSQLVERSION}"
-      image: "mysql:${MYSQLVERSION}"
-      volumes:
-        - ./mysql-${MYSQLVERSION}:/var/lib/mysql
-      environment:
-        - MYSQL_ROOT_PASSWORD=${ROOTPASS}
-        - MYSQL_DATABASE=${DBNAME}
-        - MYSQL_USER=${DBUSER}
-        - MYSQL_PASSWORD=${DBPASS}
-      networks:
-        static-network:
-          ipv4_address: "${IPV4ADDRESS}.7"
+  mysql:
+    container_name: "${PROJECTNAME}-mysql-${MYSQLVERSION}"
+    image: "mysql:${MYSQLVERSION}"
+    volumes:
+      - ./mysql-${MYSQLVERSION}:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=${ROOTPASS}
+      - MYSQL_DATABASE=${DBNAME}
+      - MYSQL_USER=${DBUSER}
+      - MYSQL_PASSWORD=${DBPASS}
+    networks:
+      static-network:
+        ipv4_address: "${IPV4ADDRESS}.7"
   hosts:
     build:
       context: ./dockerfiles/hosts
       dockerfile: Dockerfile
-      args:
-        IPV4ADDRESS: ${IPV4ADDRESS}
-        PROJECTNAME: ${PROJECTNAME}
-        TLD: ${TLD}
+    environment:
+      - IPV4ADDRESS=${IPV4ADDRESS}
+      - PROJECTNAME=${PROJECTNAME}
+      - TLD=${TLD}
     volumes:
       - /etc/hosts:/etc/hosts
   sshagent:
