@@ -35,6 +35,7 @@ services:
     volumes:
       - ./${PROJECTNAME}/${WWWROOT}:/var/www/html/
       - ./conf/php.ini:/usr/local/etc/php/conf.d/50-setting.ini
+      - ./ssh-agent:/.ssh-agent
     networks:
       static-network:
         ipv4_address: "${IPV4ADDRESS}.6"
@@ -51,6 +52,15 @@ services:
     networks:
       static-network:
         ipv4_address: "${IPV4ADDRESS}.7"
+  sshagent:
+    container_name: "${PROJECTNAME}-sshagent"
+    user: "1000"
+    build:
+      context: ./dockerfiles/ssh-agent
+      dockerfile: Dockerfile
+    volumes:
+      - ~/.ssh:/.ssh
+      - ./ssh-agent:/.ssh-agent
 networks:
   static-network:
     ipam:
