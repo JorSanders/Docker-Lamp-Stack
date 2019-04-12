@@ -28,9 +28,9 @@ RUN docker-php-ext-install gd
 # Laravel requirements
 RUN docker-php-ext-install pdo
 RUN docker-php-ext-install mbstring
+RUN docker-php-ext-install pdo_mysql
 RUN apk add --no-cache libmcrypt-dev
 RUN apk add --no-cache mysql-client
-RUN docker-php-ext-install pdo_mysql
 RUN apk add --no-cache git
 
 # Clean up
