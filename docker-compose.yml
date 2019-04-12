@@ -38,19 +38,19 @@ services:
     networks:
       static-network:
         ipv4_address: "${IPV4ADDRESS}.6"
-    mysql:
-      container_name: "${PROJECTNAME}-mysql-${MYSQLVERSION}"
-      image: "mysql:${MYSQLVERSION}"
-      volumes:
-        - ./mysql-${MYSQLVERSION}:/var/lib/mysql
-      environment:
-        - MYSQL_ROOT_PASSWORD=${ROOTPASS}
-        - MYSQL_DATABASE=${DBNAME}
-        - MYSQL_USER=${DBUSER}
-        - MYSQL_PASSWORD=${DBPASS}
-      networks:
-        static-network:
-          ipv4_address: "${IPV4ADDRESS}.7"
+  mysql:
+    container_name: "${PROJECTNAME}-mysql-${MYSQLVERSION}"
+    image: "mysql:${MYSQLVERSION}"
+    volumes:
+      - ./mysql-${MYSQLVERSION}:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=${ROOTPASS}
+      - MYSQL_DATABASE=${DBNAME}
+      - MYSQL_USER=${DBUSER}
+      - MYSQL_PASSWORD=${DBPASS}
+    networks:
+      static-network:
+        ipv4_address: "${IPV4ADDRESS}.7"
   hosts:
     build:
       context: ./dockerfiles/hosts
