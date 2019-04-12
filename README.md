@@ -1,6 +1,6 @@
 # Docker Xamp/Lamp stack. With Apache and Nginx
 
-Docker running Nginx, PHP-FPM, MySQL. 
+Docker running Apache, PHP-FPM, MySQL and Nginx. 
 
 This is for DEVELOPMENT purposes!
 
