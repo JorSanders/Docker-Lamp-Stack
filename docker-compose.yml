@@ -7,7 +7,7 @@ services:
     links:
       - phpfpm
     volumes:
-      - ./${PROJECTNAME}/public_html:/usr/local/apache2/htdocs/
+      - ./${PROJECTNAME}/${WWWROOT}:/usr/local/apache2/htdocs/
       - ./conf/httpd.conf:/usr/local/apache2/conf/httpd.conf
     hostname: "docker.com"
     environment:
@@ -18,8 +18,9 @@ services:
   nginx:
     container_name: ${PROJECTNAME}-nginx-${NGINXVERSION}
     image: nginx:${NGINXVERSION}
+    working_dir: /var/www/html/
     volumes:
-      - ./${PROJECTNAME}:/var/www/html
+      - ./${PROJECTNAME}/${WWWROOT}:/var/www/html/
       - ./conf/nginx.conf:/etc/nginx/conf.d/default.conf
     networks:
       static-network:
@@ -32,7 +33,7 @@ services:
       args:
         PHPVERSION: ${PHPVERSION}
     volumes:
-      - ./${PROJECTNAME}:/var/www/html
+      - ./${PROJECTNAME}/${WWWROOT}:/var/www/html/
       - ./conf/php.ini:/usr/local/etc/php/conf.d/50-setting.ini
       - ./ssh-agent:/.ssh-agent
     user: "1000"
