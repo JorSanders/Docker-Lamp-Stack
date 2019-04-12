@@ -2,7 +2,7 @@ version: '3.6'
 
 services:
   apache:
-    container_name: ${PROJECTNAME}-apache
+    container_name: ${PROJECTNAME}-apache-${APACHEVERSION}
     image: httpd:${APACHEVERSION}-alpine
     links:
       - phpfpm
@@ -16,7 +16,7 @@ services:
       static-network:
         ipv4_address: "${IPV4ADDRESS}.5"
   nginx:
-    container_name: ${PROJECTNAME}-nginx-${NGINXVERSION}-alpine
+    container_name: ${PROJECTNAME}-nginx-${NGINXVERSION}
     image: nginx:${NGINXVERSION}
     volumes:
       - ./${PROJECTNAME}:/var/www/html
