@@ -9,6 +9,6 @@ echo "Launching ssh-agent..."
 
 /usr/bin/ssh-agent -a ${SSH_AUTH_SOCK}
 
-ssh-add /.ssh/jor
+ssh-add /.ssh/${SSHKEY}
 
-tail -F /dev/null
+/usr/bin/ssh-agent -d

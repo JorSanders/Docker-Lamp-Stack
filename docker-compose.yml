@@ -67,6 +67,8 @@ services:
     build:
       context: ./dockerfiles/ssh-agent
       dockerfile: Dockerfile
+    environment:
+      - SSHKEY=${SSHKEY}
     volumes:
       - ~/.ssh:/.ssh
       - ./ssh-agent:/.ssh-agent
