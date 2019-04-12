@@ -2,10 +2,10 @@ version: '3.6'
 
 services:
   apache:
-    container_name: ${PROJECTNAME}-apache-${APACHEVERSION}
-    image: httpd:${APACHEVERSION}-alpine
+    container_name: "${PROJECTNAME}-apache-${APACHEVERSION}"
+    image: "httpd:${APACHEVERSION}-alpine"
     links:
-      - phpfpm
+      - "phpfpm"
     volumes:
       - ./${PROJECTNAME}/${WWWROOT}:/usr/local/apache2/htdocs/
       - ./conf/httpd.conf:/usr/local/apache2/conf/httpd.conf
@@ -16,9 +16,9 @@ services:
       static-network:
         ipv4_address: "${IPV4ADDRESS}.5"
   nginx:
-    container_name: ${PROJECTNAME}-nginx-${NGINXVERSION}
-    image: nginx:${NGINXVERSION}
-    working_dir: /var/www/html/
+    container_name: "${PROJECTNAME}-nginx-${NGINXVERSION}"
+    image: "nginx:${NGINXVERSION}"
+    working_dir: "/var/www/html/"
     volumes:
       - ./${PROJECTNAME}/${WWWROOT}:/var/www/html/
       - ./conf/nginx.conf:/etc/nginx/conf.d/default.conf
@@ -26,7 +26,7 @@ services:
       static-network:
         ipv4_address: "${IPV4ADDRESS}.8"
   phpfpm:
-    container_name: ${PROJECTNAME}-phpfpm-${PHPVERSION}
+    container_name: "${PROJECTNAME}-phpfpm-${PHPVERSION}"
     build:
       context: ./dockerfiles/php
       dockerfile: Dockerfile
@@ -36,13 +36,12 @@ services:
       - ./${PROJECTNAME}/${WWWROOT}:/var/www/html/
       - ./conf/php.ini:/usr/local/etc/php/conf.d/50-setting.ini
       - ./ssh-agent:/.ssh-agent
-    user: "1000"
     networks:
       static-network:
         ipv4_address: "${IPV4ADDRESS}.6"
   mysql:
-    container_name: ${PROJECTNAME}-mysql-${MYSQLVERSION}
-    image: mysql:${MYSQLVERSION}
+    container_name: "${PROJECTNAME}-mysql-${MYSQLVERSION}"
+    image: "mysql:${MYSQLVERSION}"
     volumes:
       - ./mysql-${MYSQLVERSION}:/var/lib/mysql
     environment:
@@ -54,13 +53,11 @@ services:
       static-network:
         ipv4_address: "${IPV4ADDRESS}.7"
   sshagent:
-    container_name: ${PROJECTNAME}-sshagent
+    container_name: "${PROJECTNAME}-sshagent"
     user: "1000"
     build:
       context: ./dockerfiles/ssh-agent
       dockerfile: Dockerfile
-      args:
-        PHPVERSION: ${PHPVERSION}
     volumes:
       - ~/.ssh:/.ssh
       - ./ssh-agent:/.ssh-agent
