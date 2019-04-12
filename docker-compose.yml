@@ -30,6 +30,7 @@ services:
       dockerfile: Dockerfile
       args:
         PHPVERSION: ${PHPVERSION}
+    user: "1000"
     volumes:
       - ./${PROJECTNAME}/${WWWROOT}:/var/www/html/
       - ./conf/php.ini:/usr/local/etc/php/conf.d/50-setting.ini
@@ -53,10 +54,10 @@ services:
     build:
       context: ./dockerfiles/hosts
       dockerfile: Dockerfile
-      args:
-        IPV4ADDRESS: ${IPV4ADDRESS}
-        PROJECTNAME: ${PROJECTNAME}
-        TLD: ${TLD}
+    environment:
+      - IPV4ADDRESS=${IPV4ADDRESS}
+      - PROJECTNAME=${PROJECTNAME}
+      - TLD=${TLD}
     volumes:
       - /etc/hosts:/etc/hosts
 networks:
