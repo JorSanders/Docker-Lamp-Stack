@@ -1,10 +1,8 @@
-# Run php applications with a Nginx webserver and a MySQL database
+# Docker Xamp/Lamp stack. With Apache and Nginx
 
 Docker running Nginx, PHP-FPM, MySQL. 
 
-INTENDED FOR DEVELOPMENT.
-
-Any feedback or questions are welcome.
+This is for DEVELOPMENT purposes!
 
 ## Overview
 
@@ -30,145 +28,75 @@ Any feedback or questions are welcome.
 * [Docker](https://docs.docker.com/engine/installation/)
 * [Docker Compose](https://docs.docker.com/compose/install/)
 
-## Setup your own repo
+## Setup 
 
-Cd into the directory you want to host your project. IE ```~/Projects/xxxx```.
+- Clone this repo ```git@github.com:JorSanders/Docker-php.git```
 
-Git clone the project.
-
-```
-$ git clone https://github.com/jorsanders/docker-php.git
-```
-
-Alternatively you can add this repo as a remote besides your own git repo.
-
-```git remote add docker-php https://github.com/jorsanders/docker-php.git```
-
-```git checkout -b docker-php docker-php/master```
-
-Then switch into your branch and merge the new branch into yours.
-
-```git checkout development```
-
-```git merge docker-php --allow-unrelated-histories```
-
-## Set the env variables
-
-If you want pre-configurations for Joomla! or Laravel switch to their respective branch.
-
-You open up the .env file in the project root. You will see some environment variables just change these to your desired values.
-These are the default values as how I set them up. 
-
-Please change the IP address to something unused. I recommend setting it to a [private network IP](https://en.wikipedia.org/wiki/IPv4#Private_networks). 
-Careful not to set it to the IP address of your router :)
-
-Also set the Project name. 
-
-Be sure to add the ip address in your host file.
-
-```
-sudo nano /etc/hosts
-```
-
-Then add a line like this. Change the first 3 parts of the ip address to how you set yours in the .env file
-```
-x.x.x.5	docker.dev www.docker.dev
-```
-
-
-## Run the application
-
-
-2. Start the application
-
-```
-$ docker-compose up
-```
-    
-3. Open your browser
-
-[192.168.100.5](http://192.168.100.5)
-   
+- Edit the .env file
+ 
+	- Set the Project Name
+	- Set the Ip
+	- Set the versions
+- (optional) Add entries to your /etc/hosts file
+	- ```sudo nano /etc/hosts```
+  
 
 ## Useful Docker commands
-For docker compose commands you'll first need to be in root the directory of this repo. 
 
-If you are using phpstorm I recommend opening a terminal in there. With Alt+F12.
+- Start docker compose on the foreground
 
-Starts all the containers defined in the project in the foreground.
-```
-docker-compose up
-```
+```docker-compose up```
 
-Useful flags
-```
--d   detached mode(doesn't stay open in your terminal)
---force-recreate (recreates all containers)
---build (rebuilds all images)
-```
+- Start docker compose on the background
 
-Removes all containers and networks listed in the compose.yml
-```
-docker-compose down
-```
+```docker-compose up -d```
 
-Lists all active containers
-```
-docker ps
-```
-Add the ```-a``` flag to include stopped containers
+- Execute a shell command in the container
 
-Execute terminal commands in a container
-```
-docker-compose exec <service name> <shell command>
-```
+```docker-compose up {service} ls```
 
-Inspect a container
-```
-docker inspect <container id>
-```
+- Open an interactive shell in a container
 
-Stops a container
-```
-docker stop <container id>
-```
+```docker-compose up {service} /bin/sh```
 
-Stops all containers
-```
-docker stop $(docker ps -q)
-```
+- Stop and remove the containers and network of the docker compose stack
 
-Stops remove all stopped containers
-```
-docker container prune
-```
+```docker-compose down```
 
-Lists all docker images
-```
-docker images
-```
+- Recreate the containers
 
-Removes an image
-```
-docker image rm <image id>
-```
+```docker-compose up --force-recreate```
 
-Removes all images
-```
-docker image rm $(docker image ls -q)
-```
+- Recreate the containers and rebuild the docker images
 
-List all networks
-```
-docker network ls
-```
+```docker-compose up --force-recreate --build```
 
-Remove a network
-```
-docker network rm <network id>
-```
+- List the active docker containers
 
-Remove all networks
-```
-docker network rm $(docker network ls -q)
-```
+```docker container ps```
+
+- List all docker containers
+
+```docker container ps -a```
+
+- Remove all stopped containers 
+
+```docker container prune```
+
+- Stop all containers
+
+```docker container stop $(docker container ps aq)```
+
+- List all docker images
+
+```docker container image ls```
+
+- List all docker networks
+
+```docker container network ls```
+
+- Or just like any other person
+
+```docker-compose --help```
+
+```docker --help```

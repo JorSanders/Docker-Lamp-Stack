@@ -15,6 +15,15 @@ services:
     networks:
       static-network:
         ipv4_address: "${IPV4ADDRESS}.5"
+  nginx:
+    container_name: ${PROJECTNAME}-nginx-${NGINXVERSION}-alpine
+    image: nginx:${NGINXVERSION}
+    volumes:
+      - ./${PROJECTNAME}:/var/www/html
+      - ./conf/nginx.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      static-network:
+        ipv4_address: "${IPV4ADDRESS}.8"
   phpfpm:
     container_name: ${PROJECTNAME}-phpfpm-${PHPVERSION}
     build:
@@ -23,7 +32,7 @@ services:
       args:
         PHPVERSION: ${PHPVERSION}
     volumes:
-      - ./${PROJECTNAME}:/usr/local/apache2/htdocs/
+      - ./${PROJECTNAME}:/var/www/html
       - ./conf/php.ini:/usr/local/etc/php/conf.d/50-setting.ini
       - ./ssh-agent:/.ssh-agent
     user: "1000"
