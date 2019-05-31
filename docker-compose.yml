@@ -5,7 +5,7 @@ services:
     container_name: "${PROJECTNAME}-apache-${APACHEVERSION}"
     image: "httpd:${APACHEVERSION}-alpine"
     volumes:
-      - ./${PROJECTNAME}/${WWWROOT}:/usr/local/apache2/htdocs/
+      - ${PROJECTROOT}/${WWWROOT}:/usr/local/apache2/htdocs/
       - ./conf/httpd.conf:/usr/local/apache2/conf/httpd.conf
     hostname: "docker.com"
     environment:
@@ -18,7 +18,7 @@ services:
     image: "nginx:${NGINXVERSION}"
     working_dir: "/var/www/html/"
     volumes:
-      - ./${PROJECTNAME}/${WWWROOT}:/var/www/html/
+      - ${PROJECTROOT}/${WWWROOT}:/var/www/html/
       - ./conf/nginx.conf:/etc/nginx/conf.d/default.conf
     networks:
       static-network:
@@ -30,9 +30,9 @@ services:
       dockerfile: Dockerfile
       args:
         PHPVERSION: ${PHPVERSION}
-    user: "1000"
+    user: "${USERID}"
     volumes:
-      - ./${PROJECTNAME}/${WWWROOT}:/var/www/html/
+      - ${PROJECTROOT}/${WWWROOT}:/var/www/html/
       - ./conf/php.ini:/usr/local/etc/php/conf.d/50-setting.ini
     networks:
       static-network:
