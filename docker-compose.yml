@@ -5,11 +5,11 @@ services:
     container_name: "${PROJECTNAME}-apache-${APACHEVERSION}"
     image: "httpd:${APACHEVERSION}-alpine"
     volumes:
-      - ./${PROJECTNAME}/${WWWROOT}:/usr/local/apache2/htdocs/
-      - ./conf/httpd.conf:/usr/local/apache2/conf/httpd.conf
+      - "${PROJECTROOT}/${WWWROOT}:/usr/local/apache2/htdocs/"
+      - "./conf/httpd.conf:/usr/local/apache2/conf/httpd.conf"
     hostname: "docker.com"
     environment:
-      - FASTCGI=fcgi://phpfpm:9000
+      - "FASTCGI=fcgi://phpfpm:9000"
     networks:
       static-network:
         ipv4_address: "${IPV4ADDRESS}.5"
@@ -18,23 +18,23 @@ services:
     image: "nginx:${NGINXVERSION}"
     working_dir: "/var/www/html/"
     volumes:
-      - ./${PROJECTNAME}/${WWWROOT}:/var/www/html/
-      - ./conf/nginx.conf:/etc/nginx/conf.d/default.conf
+      - "${PROJECTROOT}/${WWWROOT}:/var/www/html/"
+      - "./conf/nginx.conf:/etc/nginx/conf.d/default.conf"
     networks:
       static-network:
         ipv4_address: "${IPV4ADDRESS}.8"
   phpfpm:
     container_name: "${PROJECTNAME}-phpfpm-${PHPVERSION}"
     build:
-      context: ./dockerfiles/php
-      dockerfile: Dockerfile
+      context: "./dockerfiles/php"
+      dockerfile: "Dockerfile"
       args:
-        PHPVERSION: ${PHPVERSION}
-    user: "1000"
+        PHPVERSION: "${PHPVERSION}"
+    user: "${USERID}"
     volumes:
-      - ./${PROJECTNAME}/${WWWROOT}:/var/www/html/
-      - ./conf/php.ini:/usr/local/etc/php/conf.d/50-setting.ini
-      - ./ssh-agent:/.ssh-agent
+      - "${PROJECTROOT}/${WWWROOT}:/var/www/html/"
+      - "./conf/php.ini:/usr/local/etc/php/conf.d/50-setting.ini"
+      - "./ssh-agent:/.ssh-agent"
     networks:
       static-network:
         ipv4_address: "${IPV4ADDRESS}.6"
@@ -42,36 +42,36 @@ services:
     container_name: "${PROJECTNAME}-mysql-${MYSQLVERSION}"
     image: "mysql:${MYSQLVERSION}"
     volumes:
-      - ./mysql-${MYSQLVERSION}:/var/lib/mysql
+      - "./mysql-${MYSQLVERSION}:/var/lib/mysql"
     environment:
-      - MYSQL_ROOT_PASSWORD=${ROOTPASS}
-      - MYSQL_DATABASE=${DBNAME}
-      - MYSQL_USER=${DBUSER}
-      - MYSQL_PASSWORD=${DBPASS}
+      - "MYSQL_ROOT_PASSWORD=${ROOTPASS}"
+      - "MYSQL_DATABASE=${DBNAME}"
+      - "MYSQL_USER=${DBUSER}"
+      - "MYSQL_PASSWORD=${DBPASS}"
     networks:
       static-network:
         ipv4_address: "${IPV4ADDRESS}.7"
   hosts:
     build:
-      context: ./dockerfiles/hosts
-      dockerfile: Dockerfile
+      context: "./dockerfiles/hosts"
+      dockerfile: "Dockerfile"
     environment:
-      - IPV4ADDRESS=${IPV4ADDRESS}
-      - PROJECTNAME=${PROJECTNAME}
-      - TLD=${TLD}
+      - "IPV4ADDRESS=${IPV4ADDRESS}"
+      - "PROJECTNAME=${PROJECTNAME}"
+      - "TLD=${TLD}"
     volumes:
-      - /etc/hosts:/etc/hosts
+      - "/etc/hosts:/etc/hosts"
   sshagent:
     container_name: "${PROJECTNAME}-sshagent"
     user: "1000"
     build:
-      context: ./dockerfiles/ssh-agent
-      dockerfile: Dockerfile
+      context: "./dockerfiles/ssh-agent"
+      dockerfile: "Dockerfile"
     environment:
-      - SSHKEY=${SSHKEY}
+      - "SSHKEY=${SSHKEY}"
     volumes:
-      - ~/.ssh:/.ssh
-      - ./ssh-agent:/.ssh-agent
+      - "~/.ssh:/.ssh"
+      - "./ssh-agent:/.ssh-agent"
 networks:
   static-network:
     ipam:
