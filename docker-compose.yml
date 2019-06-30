@@ -61,7 +61,7 @@ services:
     volumes:
       - "/etc/hosts:/etc/hosts"
 networks:
-    static-network:
+  static-network:
     name: "${PROJECTNAME}-static-network"
     ipam:
       config:
