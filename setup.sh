@@ -105,4 +105,4 @@ fi
 
 echo 'Setup finished! To start please run docker-compose up'
 
-#rm setup.sh
+rm setup.sh
