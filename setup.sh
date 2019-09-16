@@ -95,14 +95,14 @@ replace_in_file '.env' 'PROJECTNAME=hello_world' "PROJECTNAME=${projectName}"
 replace_in_file '.env' 'IPV4ADDRESS=192.168.100' "IPV4ADDRESS=${ipaddress}"
 replace_in_file '.env' 'USERID=1000' "USERID=${userid}"
 
+# Make sure the mount directory is correct. Or you get those annoying directories owned by root
+#TODO check if file is already updated in the .env
 file=../public_html/index.php
-if test -f "$file"; then
-  docker-compose up -d
-else
-  echo 'Cannot find ../public_html/index.php.'
+if ! test -f "$file"; then
+  echo "Cannot find $file"
   echo 'If you are running a non standard setup please configure the .env file before running docker-compose up'
 fi
 
-echo 'Setup finished!'
+echo 'Setup finished! To start please run docker-compose up'
 
-rm setup.sh
+#rm setup.sh
