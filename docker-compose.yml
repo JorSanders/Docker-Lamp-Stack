@@ -36,7 +36,7 @@ services:
     user: "${USERID}"
     volumes:
       - "${PROJECTROOT}/${WWWROOT}:/var/www/html/"
-      - "./conf/php.ini:/usr/local/etc/php/conf.d/50-setting.ini"
+      - "./conf/php.ini:/usr/local/etc/php/php.ini"
     networks:
       nameless-static-network:
         ipv4_address: "${IPV4ADDRESS}.6"
