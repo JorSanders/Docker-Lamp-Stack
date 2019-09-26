@@ -24,6 +24,8 @@ RUN apk add --no-cache	libjpeg-turbo
 RUN apk add --no-cache	libjpeg-turbo-dev
 RUN docker-php-ext-install mysqli
 RUN docker-php-ext-install gd
+RUN apk add libxml2-dev
+RUN docker-php-ext-install soap
 
 # Laravel requirements
 RUN docker-php-ext-install pdo
