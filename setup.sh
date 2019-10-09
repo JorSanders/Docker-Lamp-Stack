@@ -113,7 +113,7 @@ replace_in_file '.env' 'USERID=1000' "USERID=${userid}"
 openssl req -newkey rsa:2048 -new -nodes -x509 -days 3650 -keyout privkey.pem -out fullchain.pem -subj "/C=NL/ST=Noord-Holland/L=Amsterdam/O=none/OU=IT/CN=*/emailAddress=noreply@mail.com"
 
 mv privkey.pem conf/privkey.pem
-mv privkey.pem conf/privkey.pem
+mv fullchain.pem conf/fullchain.pem
 chmod 400 conf/privkey.pem
 chown "$userid" conf/*.pem
 printf "Generated privkey.pem set \n\n"
