@@ -8,8 +8,8 @@ services:
       - "${PROJECTROOT}/${WWWROOT}:/usr/local/apache2/htdocs/"
       - "./conf/httpd.conf:/usr/local/apache2/conf/httpd.conf"
       - "./conf/httpd-ssl.conf:/usr/local/apache2/conf/extra/httpd-ssl.conf"
-      - "./conf/server.key:/usr/local/apache2/conf/server.key"
-      - "./conf/server.crt:/usr/local/apache2/conf/server.crt"
+      - "./conf/privkey.pem:/usr/local/apache2/conf/privkey.pem"
+      - "./conf/fullchain.pem:/usr/local/apache2/conf/fullchain.crt"
     hostname: "docker.com"
     environment:
       - "FASTCGI=fcgi://phpfpm:9000"
