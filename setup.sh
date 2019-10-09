@@ -120,10 +120,10 @@ organizationalunit="IT"
 email="noreply@nonexistant.com"
 password="dummypassword"
 
-openssl genrsa -des3 -passout pass:$password -out rsa.key 2048
+openssl genrsa -des3 -passout pass:$password -out server.key 2048
 #Remove passphrase from the key
-openssl rsa -in rsa.key -passin pass:$password -out rsa.key
-openssl req -new -key rsa.key -out fullchain.crt -passin pass:$password \
+openssl rsa -in server.key -passin pass:$password -out server.key
+openssl req -new -key server.key -out server.crt -passin pass:$password \
     -subj "/C=$country/ST=$state/L=$locality/O=$organization/OU=$organizationalunit/CN=$commonname/emailAddress=$email"
 mv server.key conf/server.key
 mv server.crt conf/server.crt
