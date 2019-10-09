@@ -9,7 +9,7 @@ services:
       - "./conf/httpd.conf:/usr/local/apache2/conf/httpd.conf"
       - "./conf/httpd-ssl.conf:/usr/local/apache2/conf/extra/httpd-ssl.conf"
       - "./conf/rsa.key:/usr/local/apache2/conf/rsa.key"
-      - "./conf/privkey.pem:/usr/local/apache2/conf/privkey.pem"
+      - "./conf/fullchain.crt:/usr/local/apache2/conf/fullchain.crt"
     hostname: "docker.com"
     environment:
       - "FASTCGI=fcgi://phpfpm:9000"

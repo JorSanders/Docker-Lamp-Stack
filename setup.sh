@@ -123,12 +123,12 @@ password="dummypassword"
 openssl genrsa -des3 -passout pass:$password -out rsa.key 2048
 #Remove passphrase from the key
 openssl rsa -in rsa.key -passin pass:$password -out rsa.key
-openssl req -new -key rsa.key -out fullchain.pem -passin pass:$password \
+openssl req -new -key rsa.key -out fullchain.crt -passin pass:$password \
     -subj "/C=$country/ST=$state/L=$locality/O=$organization/OU=$organizationalunit/CN=$commonname/emailAddress=$email"
 mv rsa.key conf/rsa.key
-mv fullchain.pem conf/fullchain.pem
+mv fullchain.crt conf/fullchain.crt
 chmod 400 conf/rsa.key
-chown "$userid" conf/*.pem
+chown "$userid" conf/*.crt
 chown "$userid" conf/*.key
 printf "Generated privkey.pem set \n\n"
 

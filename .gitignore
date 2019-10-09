@@ -1,3 +1,5 @@
 \.idea/
 /mysql-*
 conf/*.pem
+conf/*.key
+conf/*.crt
