@@ -8,7 +8,7 @@ services:
       - "${PROJECTROOT}/${WWWROOT}:/usr/local/apache2/htdocs/"
       - "./conf/httpd.conf:/usr/local/apache2/conf/httpd.conf"
       - "./conf/httpd-ssl.conf:/usr/local/apache2/conf/extra/httpd-ssl.conf"
-      - "./conf/fullchain.pem:/usr/local/apache2/conf/fullchain.pem"
+      - "./conf/rsa.key:/usr/local/apache2/conf/rsa.key"
       - "./conf/privkey.pem:/usr/local/apache2/conf/privkey.pem"
     hostname: "docker.com"
     environment:
