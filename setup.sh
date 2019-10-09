@@ -110,12 +110,26 @@ replace_in_file '.env' 'PROJECTNAME=hello_world' "PROJECTNAME=${projectName}"
 replace_in_file '.env' 'IPV4ADDRESS=192.168.100' "IPV4ADDRESS=${ipaddress}"
 replace_in_file '.env' 'USERID=1000' "USERID=${userid}"
 
-openssl genpkey -algorithm RSA -out privkey.pem -pkeyopt rsa_keygen_bits:2048
-openssl rsa -pubout -in privkey.pem -out fullchain.pem
-mv privkey.pem conf/privkey.pem
+#Ssl cert info
+commonname="No Name"
+country="NL"
+state="Noord Holland"
+locality="Amsterdam"
+organization="None"
+organizationalunit="IT"
+email="noreply@nonexistant.com"
+password="dummypassword"
+
+openssl genrsa -des3 -passout pass:$password -out rsa.key 2048
+#Remove passphrase from the key
+openssl rsa -in rsa.key -passin pass:$password -out rsa.key
+openssl req -new -key rsa.key -out fullchain.pem -passin pass:$password \
+    -subj "/C=$country/ST=$state/L=$locality/O=$organization/OU=$organizationalunit/CN=$commonname/emailAddress=$email"
+mv rsa.key conf/rsa.key
 mv fullchain.pem conf/fullchain.pem
-chmod 400 conf/privkey.pem
+chmod 400 conf/rsa.key
 chown "$userid" conf/*.pem
+chown "$userid" conf/*.key
 printf "Generated privkey.pem set \n\n"
 
 # Make sure the mount directory is correct. Or you get those annoying directories owned by root
