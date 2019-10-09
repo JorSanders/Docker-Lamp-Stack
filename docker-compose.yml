@@ -16,16 +16,16 @@ services:
     networks:
       nameless-static-network:
         ipv4_address: "${IPV4ADDRESS}.5"
-#  nginx:
-#    container_name: "${PROJECTNAME}-nginx-${NGINXVERSION}"
-#    image: "nginx:${NGINXVERSION}"
-#    working_dir: "/var/www/html/"
-#    volumes:
-#      - "${PROJECTROOT}/${WWWROOT}:/var/www/html/"
-#      - "./conf/nginx.conf:/etc/nginx/conf.d/default.conf"
-#    networks:
-#      nameless-static-network:
-#        ipv4_address: "${IPV4ADDRESS}.8"
+  nginx:
+    container_name: "${PROJECTNAME}-nginx-${NGINXVERSION}"
+    image: "nginx:${NGINXVERSION}"
+    working_dir: "/var/www/html/"
+    volumes:
+      - "${PROJECTROOT}/${WWWROOT}:/var/www/html/"
+      - "./conf/nginx.conf:/etc/nginx/conf.d/default.conf"
+    networks:
+      nameless-static-network:
+        ipv4_address: "${IPV4ADDRESS}.8"
   phpfpm:
     container_name: "${PROJECTNAME}-phpfpm-${PHPVERSION}"
     build:
@@ -40,19 +40,19 @@ services:
     networks:
       nameless-static-network:
         ipv4_address: "${IPV4ADDRESS}.6"
-#  mysql:
-#    container_name: "${PROJECTNAME}-mysql-${MYSQLVERSION}"
-#    image: "mysql:${MYSQLVERSION}"
-#    volumes:
-#      - "./mysql-${MYSQLVERSION}:/var/lib/mysql"
-#    environment:
-#      - "MYSQL_ROOT_PASSWORD=${ROOTPASS}"
-#      - "MYSQL_DATABASE=${DBNAME}"
-#      - "MYSQL_USER=${DBUSER}"
-#      - "MYSQL_PASSWORD=${DBPASS}"
-#    networks:
-#      nameless-static-network:
-#        ipv4_address: "${IPV4ADDRESS}.7"
+  mysql:
+    container_name: "${PROJECTNAME}-mysql-${MYSQLVERSION}"
+    image: "mysql:${MYSQLVERSION}"
+    volumes:
+      - "./mysql-${MYSQLVERSION}:/var/lib/mysql"
+    environment:
+      - "MYSQL_ROOT_PASSWORD=${ROOTPASS}"
+      - "MYSQL_DATABASE=${DBNAME}"
+      - "MYSQL_USER=${DBUSER}"
+      - "MYSQL_PASSWORD=${DBPASS}"
+    networks:
+      nameless-static-network:
+        ipv4_address: "${IPV4ADDRESS}.7"
 networks:
   nameless-static-network:
     name: "${PROJECTNAME}-static-network"
