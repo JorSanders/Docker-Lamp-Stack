@@ -125,8 +125,8 @@ openssl genrsa -des3 -passout pass:$password -out rsa.key 2048
 openssl rsa -in rsa.key -passin pass:$password -out rsa.key
 openssl req -new -key rsa.key -out fullchain.crt -passin pass:$password \
     -subj "/C=$country/ST=$state/L=$locality/O=$organization/OU=$organizationalunit/CN=$commonname/emailAddress=$email"
-mv rsa.key conf/rsa.key
-mv fullchain.crt conf/fullchain.crt
+mv server.key conf/server.key
+mv server.crt conf/server.crt
 chmod 400 conf/rsa.key
 chown "$userid" conf/*.crt
 chown "$userid" conf/*.key
