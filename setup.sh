@@ -127,7 +127,7 @@ openssl req -new -key server.key -out server.crt -passin pass:$password \
     -subj "/C=$country/ST=$state/L=$locality/O=$organization/OU=$organizationalunit/CN=$commonname/emailAddress=$email"
 mv server.key conf/server.key
 mv server.crt conf/server.crt
-chmod 400 conf/rsa.key
+chmod 400 conf/server.key
 chown "$userid" conf/*.crt
 chown "$userid" conf/*.key
 printf "Generated privkey.pem set \n\n"
