@@ -104,17 +104,16 @@ replace_in_file() {
   sed -i "s/${2}/${3}/g" "${1}"
 }
 
-printf "Updated docker-compose.yml and .env \n\n"
-replace_in_file 'docker-compose.yml' 'nameless-static-network' "${projectName}-static-network"
+printf "Updated .env \n\n"
 replace_in_file '.env' 'PROJECTNAME=hello_world' "PROJECTNAME=${projectName}"
 replace_in_file '.env' 'IPV4ADDRESS=192.168.100' "IPV4ADDRESS=${ipaddress}"
 replace_in_file '.env' 'USERID=1000' "USERID=${userid}"
+mv ../ "../Docker-Lamp-Stack-${projectName}"
 
 openssl req -newkey rsa:2048 -new -nodes -x509 -days 3650 -keyout privkey.pem -out fullchain.pem -subj "/C=NL/ST=Noord-Holland/L=Amsterdam/O=none/OU=IT/CN=*/emailAddress=noreply@mail.com"
 
 mv privkey.pem conf/privkey.pem
 mv fullchain.pem conf/fullchain.pem
-chmod 400 conf/privkey.pem
 chown "$userid" conf/*.pem
 printf "Generated privkey.pem set \n\n"
 
