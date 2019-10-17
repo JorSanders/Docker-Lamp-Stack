@@ -108,8 +108,10 @@ printf "Updated .env \n\n"
 replace_in_file '.env' 'PROJECTNAME=hello_world' "PROJECTNAME=${projectName}"
 replace_in_file '.env' 'IPV4ADDRESS=192.168.100' "IPV4ADDRESS=${ipaddress}"
 replace_in_file '.env' 'USERID=1000' "USERID=${userid}"
-dockerDir=$(basename $(dirname "$PWD"))
-mv "../${dockerDir}" "../${dockerDir}-${projectName}"
+
+dockerDir=$PWD
+echo $dockerDir
+mv "${dockerDir}" "${dockerDir}-${projectName}"
 
 openssl req -newkey rsa:2048 -new -nodes -x509 -days 3650 -keyout privkey.pem -out fullchain.pem -subj "/C=NL/ST=Noord-Holland/L=Amsterdam/O=none/OU=IT/CN=*/emailAddress=noreply@mail.com"
 
