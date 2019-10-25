@@ -42,7 +42,7 @@ ask() {
 
 # Check that we have root access. Needed to update the hosts file
 if [ "$(id -u)" -ne 0 ]; then
-  echo 'you need to run this with sudo'
+  echo 'You need to run this with sudo.'
   exit 1
 fi
 
@@ -54,18 +54,24 @@ tld="com"
 projectName=$(basename $(dirname "$PWD"))
 # Confirm the domain name before writing to the hosts file
 while true; do
-  if ask "Your url will look like local.${projectName}.${tld} is this correct?"; then
+  if ask "Your url will look like local.${projectName}.${tld} is this correct? "; then
+    printf "\n"
     break
   else
-    # Project name
-    if ask "Do you want to change your domain name? (currently: ${projectName})"; then
-      read -r -p "New Domainname: " projectName
-    fi
+    printf "\n"
 
-    # Tld
-    if ask "Do you want to change your tld? (currently: ${tld})"; then
-      read -r -p "New tld: " tld
+    read -r -p "Replace tld, empty to keep ($tld): " newTld
+    if [ ! -z "$newTld" ] ; then
+      tld=$newTld
     fi
+    printf "\n"
+
+    read -r -p "Replace name, empty to keep ($projectName): " newProjectName
+    if [ ! -z "$newProjectName"  ]; then
+      projectName=$newProjectName
+    fi
+    printf "\n"
+
   fi
 done
 
@@ -81,19 +87,38 @@ done
 
 # Add the lines to the hosts file
 # TODO: add lines in a specified section instead on the bottom
+echo "# ${projectName}" >>"/etc/hosts"
 echo "${ipaddress}.5   local.${projectName}.${tld}" >>"/etc/hosts"
 echo "${ipaddress}.7   local.msqyl.${projectName}.${tld}" >>"/etc/hosts"
 echo "${ipaddress}.8   local.nginx.${projectName}.${tld}" >>"/etc/hosts"
+echo " " >> "/etc/hosts"
+
+echo "Added the following lines to your /ect/hosts:"
+echo "${ipaddress}.5   local.${projectName}.${tld}"
+echo "${ipaddress}.7   local.msqyl.${projectName}.${tld}"
+echo "${ipaddress}.8   local.nginx.${projectName}.${tld}"
+printf "\n"
 
 # Edit some files
 replace_in_file() {
   sed -i "s/${2}/${3}/g" "${1}"
 }
 
-replace_in_file 'docker-compose.yml' 'nameless-static-network' "${projectName}-static-network"
+printf "Updated .env \n\n"
 replace_in_file '.env' 'PROJECTNAME=hello_world' "PROJECTNAME=${projectName}"
 replace_in_file '.env' 'IPV4ADDRESS=192.168.100' "IPV4ADDRESS=${ipaddress}"
 replace_in_file '.env' 'USERID=1000' "USERID=${userid}"
+
+dockerDir=$PWD
+echo $dockerDir
+mv "${dockerDir}" "${dockerDir}-${projectName}"
+
+openssl req -newkey rsa:2048 -new -nodes -x509 -days 3650 -keyout privkey.pem -out fullchain.pem -subj "/C=NL/ST=Noord-Holland/L=Amsterdam/O=none/OU=IT/CN=*/emailAddress=noreply@mail.com"
+
+mv privkey.pem conf/privkey.pem
+mv fullchain.pem conf/fullchain.pem
+chown "$userid" conf/*.pem
+printf "Generated privkey.pem set \n\n"
 
 # Make sure the mount directory is correct. Or you get those annoying directories owned by root
 #TODO check if file is already updated in the .env
@@ -101,8 +126,13 @@ file=../public_html/index.php
 if ! test -f "$file"; then
   echo "Cannot find $file"
   echo 'If you are running a non standard setup please configure the .env file before running docker-compose up'
+  printf "\n"
 fi
 
-echo 'Setup finished! To start please run docker-compose up'
+if ask "Gitignore Docker Lamp stack?"; then
+  printf "\n*" >> .gitignore
+fi
 
-rm setup.sh
+echo 'Setup finished! To start please run `docker-compose up`'
+
+#rm setup.sh
